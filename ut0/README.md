@@ -12,12 +12,16 @@
 
 ## Conflicto provocado en el repositorio en linea
 
-### Imagen
-
 ![Iamgen3](img/img3.png)
 
 El conflicto se ha solucionado mediante el asistente de código de VSCode.
 Una vez resuelto se ha cerrado la incidencia con el comando: __git rebase --continue__
+
+## Conflicto provocado (Resuelto de forma correcta)
+
+![Imagen5](img/img5.png)
+
+El conflicto se ha resuelto haciendo un Merge con el DETACHED_HEAD y el commit local.
 
 ## Línea del tiempo generada por git
 
