@@ -1,15 +1,5 @@
 # DWEC-Prac1-Voluntaria
 
-## Datos
-
-### Nombre
-
-Hugo Moruno Parra
-
-### Email
-
-<hmorunop01@educarex.es> (Hasta que se me facilite el email del I.E.S Castelar)
-
 ## Clonación del Proyecto en la carpeta temp
 
 ### Comando y ventana de confirmación
@@ -31,7 +21,7 @@ Una vez resuelto se ha cerrado la incidencia con el comando: __git rebase --cont
 
 ## Línea del tiempo generada por git
 
-Se ha usado el comando:
+Se ha usado el comando:  
 __git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all__
 
 ![Imagen4](img/img4.png)
