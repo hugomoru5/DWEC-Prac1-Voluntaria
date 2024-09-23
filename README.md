@@ -1,6 +1,6 @@
 # ESTE REPOSITORIO ES EL ANTIGUO, EL NUEVO (IESCASTELAR) SE ENCUENTRA EN:
 
-[RepositorioCastelar](https://github.com/hugomorunocastelar/DEAPW)
+[RepositorioCastelar](https://github.com/hugomorunocastelar/DEAPW-Hugo-Moruno)
 
 # Repositorio de Prácticas del Alumno: Hugo Moruno Parra
 
