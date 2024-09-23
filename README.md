@@ -9,9 +9,9 @@ Hugo Moruno Parra
 
 ### Email
 
-<hugomoruno2003@gmail.com> Personal
-<hmorunop01@educarex.es> Educarex
-<dawhmorunop@iescastelar.com> Castelar
+<hugomoruno2003@gmail.com> Personal  
+<hmorunop01@educarex.es> Educarex  
+<dawhmorunop@iescastelar.com> Castelar  
 
 ## Asignatura de Despliege de Aplicaciones Web
 
