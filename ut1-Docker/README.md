@@ -467,4 +467,4 @@ Los ids de los contenedores:
 
     </details>
 
-Una vez comprobado que la red interna funciona perfectamente, sabemos que, si la instalación se hace en una maquina virtual de un vps, los puertos de la ip (dentro del ejercicio son los de Mi ordenador (URL DIAGRAMA)) serán accesibles desde el alojamiento de la máquina del vps.
+Una vez comprobado que la red interna funciona perfectamente, sabemos que, si la instalación se hace en una maquina virtual de un vps, los puertos de la ip (dentro del ejercicio son los de Mi ordenador ([Diagrama](#conclusión))) serán accesibles desde el alojamiento de la máquina del vps.
