@@ -72,7 +72,7 @@
     vagrant up
     ```
     - Obtendremos la siguiente salida por consola (En caso de que ya tengas en tu máquina la imagen de generic/debian12, si no la tienes la descargará):
-    [Consola del comando Vagrant Up](./vagrant-up.txt)
+    [Consola del comando Vagrant Up](./documents/vagrant-up.txt)
 
 ## Núcleo del Ejercicio
 
@@ -300,7 +300,7 @@ Estos pasos anteriormente explicados, detallan una estructura de Máquina virtua
 - phpMyAdmin
 
 El mapa del entorno creado es el siguiente:
-![Diagrama](./diagrama.png)
+![Diagrama](./documents/diagrama.png)
 
 Cómo se puede ver a continuación, todos los contenedores tienen conexión entre ellos, con la máquina virtual y con el host.
 
