@@ -1,11 +1,7 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "generic/debian12"
-   config.vm.network "public_network"
-   config.vm.synced_folder "./", "/vagrant"
-   config.vm.provision "shell", path: "provision.sh"
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-  # config.vm.provider "virtualbox" do |vb|
-  #   vb.memory = "1024"
-  # end
+  config.vm.box = "generic/debian12"  #Selecciona y descarga la última versión de debian12
+  config.vm.synced_folder "./vmfiles", "/vagrant" #Monta el volúmen de la MV en el directorio del contenedor
+  config.vm.provision "shell", path: "provision.sh" #Ejecuta el contenido del archivo provision.sh en la máquina recién creada
+  config.vm.network "forwarded_port", guest: 80, host: 8080 #Mapeo del puerto 80 (puerto para acceder a php-apache desde el mundo).
+  config.vm.network "forwarded_port", guest: 8080, host: 4430 #Mapeo del puerto 8080 (puerto para acceder a phpMyAdmin desde el mundo).
 end
