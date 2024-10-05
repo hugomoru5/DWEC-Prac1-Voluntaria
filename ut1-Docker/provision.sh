@@ -18,7 +18,7 @@ docker network create --driver bridge RED_INTERNA
 
     sudo mkdir /php-apache && sudo touch /php-apache/info.php
     sudo chmod -R o+rw /php-apache
-    echo "<?php phpinfo(); ?>" > php-apache/info.php
+    echo "<?php phpinfo(); ?>" >> /php-apache/info.php
 
     docker run -d --name apache_cont --network RED_INTERNA -v /php-apache:/var/www/html -p 80:80 php:apache 
 
