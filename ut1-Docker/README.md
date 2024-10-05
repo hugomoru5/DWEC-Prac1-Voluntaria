@@ -1,6 +1,20 @@
 # DEAPW - Introducción a Docker CLI, Hugo Moruno
 
-## Lista de requisitos
+## Índice
+
+1. [Requisitos](#lista-de-requisitos)
+2. [Base del Ejercicio](#base-del-ejercicio)
+3. [Núcleo del Ejercicio](#núcleo-del-ejercicio)
+    - [Mariadb](#microservicio-mariadb)
+    - [Apache](#microservicio-php-apache)
+    - [PhpMyAdmin](#microservicio-phpmyadmin)  
+4. [Conclusión](#conclusión)
+5. [Instrucciones Vagrantfile](#instrucciones-vagrantfile)
+
+
+## Lista de requisitos 
+
+[-> Índice](#índice)
 
 - [x] Crear la máquina virtual. (Explicación)
 - [x] Estructura, red interna.
@@ -15,9 +29,11 @@
     1. Con acceso a 'mariaDB'.
     2. Accesible desde el mundo en el puerto 8080 o 443.
     3. Usar la variable de entorno: PMA_HOST=nombre_contenedor_mariaDB.
-- [ ] Creación del archivo vagrant y explicación para la ejecución y puesta en marcha del mismo.
+- [x] Creación del archivo vagrant y explicación para la ejecución y puesta en marcha del mismo.
 
-## Base del ejercicio
+## Base del ejercicio 
+
+[-> Índice](#índice)
 
 *Vagrant y VirtualBox*
 
@@ -37,6 +53,9 @@
     ```powershell
     vagrant init generic/debian12
     ```
+
+    ##### vagrantfile
+
     - Debemos comprobar que se nos ha creado el archivo *vagrantfile* sin extensión.
     - Una vez creado, sustituiremos todo su contenido por el siguiente:
     ```ruby
@@ -48,6 +67,7 @@
     config.vm.network "forwarded_port", guest: 8080, host: 4430 #Mapeo del puerto 8080 (puerto para acceder a phpMyAdmin desde el mundo).
     end
     ```
+
     - Ahora, crearemos el archivo provision.sh e introduciremos el siguiente contenido:
     ```bash
     apt-get update && apt-get install -y curl
@@ -72,9 +92,11 @@
     vagrant up
     ```
     - Obtendremos la siguiente salida por consola (En caso de que ya tengas en tu máquina la imagen de generic/debian12, si no la tienes la descargará):
-    [Consola del comando Vagrant Up](./vagrant-up.txt)
+    [Consola del comando Vagrant Up](./documents/vagrant-up.txt)
 
-## Núcleo del Ejercicio
+## Núcleo del Ejercicio 
+
+[-> Índice](#índice)
 
 *ADVERTENCIA*
 
@@ -118,7 +140,9 @@ Breve explicación:
 - --driver bridge: Especifíca que la red creada sea una vlan entre los contenedores y el host.
 - RED_INTERNA: nombre de la red
 
-### Microservicio: MariaDB
+### Microservicio: MariaDB 
+
+[-> Índice](#índice)
 
 *Contenedor de Docker*
 
@@ -163,7 +187,9 @@ Debería devolvernos una salida por consola similar a ésta:
 
 Con ello hemos creado el contenedor de mariaDB visible únicamente dentro de la máquina. Éste tiene un usuario de mariaDB 'pepe' con contraseña 'despliegue' y una contraseña de root 'maria_db'.
 
-### Microservicio: php-apache
+### Microservicio: php-apache 
+
+[-> Índice](#índice)
 
 *Contenedor de Docker*
 
@@ -176,20 +202,20 @@ Antes de crear el servidor de php-apache, hayq ue crear el archivo en un directo
 ```bash
     sudo mkdir /php-apache && sudo touch /php-apache/info.php
     sudo chmod -R o+rw /php-apache
-    echo "<?php phpinfo(); ?>" > php-apache/info.php
+    echo "<?php phpinfo(); ?>" >> /php-apache/info.php
 ```
 
 Breve explicación:
 - sudo mkdir /php-apache && sudo touch /php-apache/info.php: crea el directorio en la raíz y el archivo de info.php
 - sudo chmod -R o+rw /php-apache: permite leer y escribir el directorio (y su contenido) a todos los usuarios del sistema.
-- echo "<?php phpinfo(); ?>" > php-apache/info.php: introduce la línea de php que ejecuta el phpinfo() en el archivo indicado anteriormente.
+- echo "<?php phpinfo(); ?>" >> /php-apache/info.php: introduce la línea de php que ejecuta el phpinfo() en el archivo indicado anteriormente.
 
 Una vez ejecutados, deberíamos obtener la siguiente información si abrimos el archivo (cat):
 
 ```bash
     vagrant@debian12:/$ sudo mkdir /php-apache && sudo touch /php-apache/info.php
     vagrant@debian12:/$ sudo chmod -R o+rw /php-apache
-    vagrant@debian12:/$ echo "<?php phpinfo(); ?>" > php-apache/info.php
+    vagrant@debian12:/$ echo "<?php phpinfo(); ?>" >> /php-apache/info.php
     vagrant@debian12:/$ cat /php-apache/info.php
     <?php phpinfo(); ?>
 ```
@@ -238,7 +264,9 @@ Debería devolvernos una salida por consola similar a ésta:
 
 Con ello hemos creado el contenedor de php-apache visible desde el mundo entero a través del puerto 80 de la máquina virtual. Éste tiene mapeado el volúmen siguiente: la carpeta /php-apache de la máquina virtual en el contenedor, /var/www/html (carpeta que lee el servidor de php).
 
-### Microservicio: phpMyAdmin
+### Microservicio: phpMyAdmin 
+
+[-> Índice](#índice)
 
 *Contenedor de Docker*
 
@@ -291,7 +319,9 @@ Debería devolvernos una salida por consola similar a ésta:
 
 Con ello hemos creado el contenedor de phpMyAdmin visible desde el mundo entero a través del puerto 8080 de la máquina virtual. Éste tiene guardado en la variable de entorno PMA_HOST que guarda el nombre del servidor de bases de datos al que debe conectarse phpMyAdmin (mariadb_cont).
 
-## Conclusión
+## Conclusión 
+
+[-> Índice](#índice)
 
 Estos pasos anteriormente explicados, detallan una estructura de Máquina virtual que tiene Docker instalado y 3 contenedores en su interior:
 
@@ -300,7 +330,7 @@ Estos pasos anteriormente explicados, detallan una estructura de Máquina virtua
 - phpMyAdmin
 
 El mapa del entorno creado es el siguiente:
-![Diagrama](./diagrama.png)
+![Diagrama](./documents/diagrama.png)
 
 Cómo se puede ver a continuación, todos los contenedores tienen conexión entre ellos, con la máquina virtual y con el host.
 
@@ -312,146 +342,194 @@ Los ids de los contenedores:
     1c9f58c19b4e   mariadb_cont      0.04%     258MiB / 1.921GiB     13.12%    25.5MB / 176kB    30.4MB / 97.5MB   9
 ```
 - phpMyAdmin:
-```bash
-    root@70bc16084da5:/# ping -c4 apache_cont
-    PING apache_cont (172.18.0.3) 56(84) bytes of data.
-    64 bytes from 70bc16084da5 (172.18.0.3): icmp_seq=1 ttl=64 time=0.026 ms
-    64 bytes from 70bc16084da5 (172.18.0.3): icmp_seq=2 ttl=64 time=0.044 ms
-    64 bytes from 70bc16084da5 (172.18.0.3): icmp_seq=3 ttl=64 time=0.043 ms
-    64 bytes from 70bc16084da5 (172.18.0.3): icmp_seq=4 ttl=64 time=0.042 ms
+    <details>
 
-    --- apache_cont ping statistics ---
-    4 packets transmitted, 4 received, 0% packet loss, time 3048ms
-    rtt min/avg/max/mdev = 0.026/0.038/0.044/0.007 ms
-    root@70bc16084da5:/# ping -c4 mariadb_cont
-    PING mariadb_cont (172.18.0.2) 56(84) bytes of data.
-    64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=1 ttl=64 time=0.052 ms
-    64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=2 ttl=64 time=0.058 ms
-    64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=3 ttl=64 time=0.054 ms
-    64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=4 ttl=64 time=0.061 ms
+    ```bash
+        root@70bc16084da5:/# ping -c4 apache_cont
+        PING apache_cont (172.18.0.3) 56(84) bytes of data.
+        64 bytes from 70bc16084da5 (172.18.0.3): icmp_seq=1 ttl=64 time=0.026 ms
+        64 bytes from 70bc16084da5 (172.18.0.3): icmp_seq=2 ttl=64 time=0.044 ms
+        64 bytes from 70bc16084da5 (172.18.0.3): icmp_seq=3 ttl=64 time=0.043 ms
+        64 bytes from 70bc16084da5 (172.18.0.3): icmp_seq=4 ttl=64 time=0.042 ms
 
-    --- mariadb_cont ping statistics ---
-    4 packets transmitted, 4 received, 0% packet loss, time 3030ms
-    rtt min/avg/max/mdev = 0.052/0.056/0.061/0.003 ms
-    root@70bc16084da5:/# ping 192.168.1.109
-    PING 192.168.1.109 (192.168.1.109) 56(84) bytes of data.
-    64 bytes from 192.168.1.109: icmp_seq=1 ttl=64 time=0.780 ms
-    64 bytes from 192.168.1.109: icmp_seq=2 ttl=64 time=0.057 ms
-    64 bytes from 192.168.1.109: icmp_seq=3 ttl=64 time=0.055 ms
-    64 bytes from 192.168.1.109: icmp_seq=4 ttl=64 time=0.054 ms
-    64 bytes from 192.168.1.109: icmp_seq=5 ttl=64 time=0.060 ms
-    64 bytes from 192.168.1.109: icmp_seq=6 ttl=64 time=0.054 ms
-    64 bytes from 192.168.1.109: icmp_seq=7 ttl=64 time=0.064 ms
-    64 bytes from 192.168.1.109: icmp_seq=8 ttl=64 time=0.054 ms
-    64 bytes from 192.168.1.109: icmp_seq=9 ttl=64 time=0.070 ms
-    64 bytes from 192.168.1.109: icmp_seq=10 ttl=64 time=0.056 ms
-    64 bytes from 192.168.1.109: icmp_seq=11 ttl=64 time=0.065 ms
-    64 bytes from 192.168.1.109: icmp_seq=12 ttl=64 time=0.069 ms
-    64 bytes from 192.168.1.109: icmp_seq=13 ttl=64 time=0.054 ms
-    64 bytes from 192.168.1.109: icmp_seq=14 ttl=64 time=0.056 ms
-    ^C
-    --- 192.168.1.109 ping statistics ---
-    14 packets transmitted, 14 received, 0% packet loss, time 13286ms
-    rtt min/avg/max/mdev = 0.054/0.110/0.780/0.185 ms
-    root@70bc16084da5:/# ping -c4 192.168.1.20
-    PING 192.168.1.20 (192.168.1.20) 56(84) bytes of data.
-    64 bytes from 192.168.1.20: icmp_seq=1 ttl=127 time=2.79 ms
-    64 bytes from 192.168.1.20: icmp_seq=2 ttl=127 time=0.624 ms
-    64 bytes from 192.168.1.20: icmp_seq=3 ttl=127 time=0.658 ms
-    64 bytes from 192.168.1.20: icmp_seq=4 ttl=127 time=0.638 ms
+        --- apache_cont ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss, time 3048ms
+        rtt min/avg/max/mdev = 0.026/0.038/0.044/0.007 ms
+        root@70bc16084da5:/# ping -c4 mariadb_cont
+        PING mariadb_cont (172.18.0.2) 56(84) bytes of data.
+        64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=1 ttl=64 time=0.052 ms
+        64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=2 ttl=64 time=0.058 ms
+        64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=3 ttl=64 time=0.054 ms
+        64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=4 ttl=64 time=0.061 ms
 
-    --- 192.168.1.20 ping statistics ---
-    4 packets transmitted, 4 received, 0% packet loss, time 3012ms
-    rtt min/avg/max/mdev = 0.624/1.178/2.793/0.932 ms
-```
+        --- mariadb_cont ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss, time 3030ms
+        rtt min/avg/max/mdev = 0.052/0.056/0.061/0.003 ms
+        root@70bc16084da5:/# ping 172.18.0.1
+        PING 172.18.0.1 (172.18.0.1) 56(84) bytes of data.
+        64 bytes from 172.18.0.1: icmp_seq=1 ttl=64 time=0.780 ms
+        64 bytes from 172.18.0.1: icmp_seq=2 ttl=64 time=0.057 ms
+        64 bytes from 172.18.0.1: icmp_seq=3 ttl=64 time=0.055 ms
+        64 bytes from 172.18.0.1: icmp_seq=4 ttl=64 time=0.054 ms
+        64 bytes from 172.18.0.1: icmp_seq=5 ttl=64 time=0.060 ms
+        64 bytes from 172.18.0.1: icmp_seq=6 ttl=64 time=0.054 ms
+        64 bytes from 172.18.0.1: icmp_seq=7 ttl=64 time=0.064 ms
+        64 bytes from 172.18.0.1: icmp_seq=8 ttl=64 time=0.054 ms
+        64 bytes from 172.18.0.1: icmp_seq=9 ttl=64 time=0.070 ms
+        64 bytes from 172.18.0.1: icmp_seq=10 ttl=64 time=0.056 ms
+        64 bytes from 172.18.0.1: icmp_seq=11 ttl=64 time=0.065 ms
+        64 bytes from 172.18.0.1: icmp_seq=12 ttl=64 time=0.069 ms
+        64 bytes from 172.18.0.1: icmp_seq=13 ttl=64 time=0.054 ms
+        64 bytes from 172.18.0.1: icmp_seq=14 ttl=64 time=0.056 ms
+        ^C
+        --- 172.18.0.1 ping statistics ---
+        14 packets transmitted, 14 received, 0% packet loss, time 13286ms
+        rtt min/avg/max/mdev = 0.054/0.110/0.780/0.185 ms
+        root@70bc16084da5:/# ping -c4 192.168.1.20
+        PING 192.168.1.20 (192.168.1.20) 56(84) bytes of data.
+        64 bytes from 192.168.1.20: icmp_seq=1 ttl=127 time=2.79 ms
+        64 bytes from 192.168.1.20: icmp_seq=2 ttl=127 time=0.624 ms
+        64 bytes from 192.168.1.20: icmp_seq=3 ttl=127 time=0.658 ms
+        64 bytes from 192.168.1.20: icmp_seq=4 ttl=127 time=0.638 ms
+
+        --- 192.168.1.20 ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss, time 3012ms
+        rtt min/avg/max/mdev = 0.624/1.178/2.793/0.932 ms
+    ```
+
+    </details>
 
 - php-apache:
-```bash
-    root@be7892528e89:/var/www/html# ping -c4 phpmyadmin_cont
-    PING phpmyadmin_cont (172.18.0.4) 56(84) bytes of data.
-    64 bytes from be7892528e89 (172.18.0.4): icmp_seq=1 ttl=64 time=0.109 ms
-    64 bytes from be7892528e89 (172.18.0.4): icmp_seq=2 ttl=64 time=0.051 ms
-    64 bytes from be7892528e89 (172.18.0.4): icmp_seq=3 ttl=64 time=0.042 ms
-    64 bytes from be7892528e89 (172.18.0.4): icmp_seq=4 ttl=64 time=0.066 ms
+    <details>
 
-    --- phpmyadmin_cont ping statistics ---
-    4 packets transmitted, 4 received, 0% packet loss, time 3063ms
-    rtt min/avg/max/mdev = 0.042/0.067/0.109/0.025 ms
-    root@be7892528e89:/var/www/html# ping -c4 mariadb_cont
-    PING mariadb_cont (172.18.0.2) 56(84) bytes of data.
-    64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=1 ttl=64 time=0.035 ms
-    64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=2 ttl=64 time=0.056 ms
-    64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=3 ttl=64 time=0.062 ms
-    64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=4 ttl=64 time=0.071 ms
+    ```bash
+        root@be7892528e89:/var/www/html# ping -c4 phpmyadmin_cont
+        PING phpmyadmin_cont (172.18.0.4) 56(84) bytes of data.
+        64 bytes from be7892528e89 (172.18.0.4): icmp_seq=1 ttl=64 time=0.109 ms
+        64 bytes from be7892528e89 (172.18.0.4): icmp_seq=2 ttl=64 time=0.051 ms
+        64 bytes from be7892528e89 (172.18.0.4): icmp_seq=3 ttl=64 time=0.042 ms
+        64 bytes from be7892528e89 (172.18.0.4): icmp_seq=4 ttl=64 time=0.066 ms
 
-    --- mariadb_cont ping statistics ---
-    4 packets transmitted, 4 received, 0% packet loss, time 3031ms
-    rtt min/avg/max/mdev = 0.035/0.056/0.071/0.013 ms
-    root@be7892528e89:/var/www/html# ping -c4 192.168.1.109
-    PING 192.168.1.109 (192.168.1.109) 56(84) bytes of data.
-    64 bytes from 192.168.1.109: icmp_seq=1 ttl=64 time=0.608 ms
-    64 bytes from 192.168.1.109: icmp_seq=2 ttl=64 time=0.053 ms
-    64 bytes from 192.168.1.109: icmp_seq=3 ttl=64 time=0.054 ms
-    64 bytes from 192.168.1.109: icmp_seq=4 ttl=64 time=0.057 ms
+        --- phpmyadmin_cont ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss, time 3063ms
+        rtt min/avg/max/mdev = 0.042/0.067/0.109/0.025 ms
+        root@be7892528e89:/var/www/html# ping -c4 mariadb_cont
+        PING mariadb_cont (172.18.0.2) 56(84) bytes of data.
+        64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=1 ttl=64 time=0.035 ms
+        64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=2 ttl=64 time=0.056 ms
+        64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=3 ttl=64 time=0.062 ms
+        64 bytes from mariadb_cont.RED_INTERNA (172.18.0.2): icmp_seq=4 ttl=64 time=0.071 ms
 
-    --- 192.168.1.109 ping statistics ---
-    4 packets transmitted, 4 received, 0% packet loss, time 3061ms
-    rtt min/avg/max/mdev = 0.053/0.193/0.608/0.239 ms
-    root@be7892528e89:/var/www/html# ping -c4 192.168.1.20
-    PING 192.168.1.20 (192.168.1.20) 56(84) bytes of data.
-    64 bytes from 192.168.1.20: icmp_seq=1 ttl=127 time=1.28 ms
-    64 bytes from 192.168.1.20: icmp_seq=2 ttl=127 time=0.469 ms
-    64 bytes from 192.168.1.20: icmp_seq=3 ttl=127 time=0.591 ms
-    64 bytes from 192.168.1.20: icmp_seq=4 ttl=127 time=0.464 ms
+        --- mariadb_cont ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss, time 3031ms
+        rtt min/avg/max/mdev = 0.035/0.056/0.071/0.013 ms
+        root@be7892528e89:/var/www/html# ping -c4 172.18.0.1
+        PING 172.18.0.1 (172.18.0.1) 56(84) bytes of data.
+        64 bytes from 172.18.0.1: icmp_seq=1 ttl=64 time=0.608 ms
+        64 bytes from 172.18.0.1: icmp_seq=2 ttl=64 time=0.053 ms
+        64 bytes from 172.18.0.1: icmp_seq=3 ttl=64 time=0.054 ms
+        64 bytes from 172.18.0.1: icmp_seq=4 ttl=64 time=0.057 ms
 
-    --- 192.168.1.20 ping statistics ---
-    4 packets transmitted, 4 received, 0% packet loss, time 3051ms
-    rtt min/avg/max/mdev = 0.464/0.702/1.284/0.339 ms
-```
+        --- 172.18.0.1 ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss, time 3061ms
+        rtt min/avg/max/mdev = 0.053/0.193/0.608/0.239 ms
+        root@be7892528e89:/var/www/html# ping -c4 192.168.1.20
+        PING 192.168.1.20 (192.168.1.20) 56(84) bytes of data.
+        64 bytes from 192.168.1.20: icmp_seq=1 ttl=127 time=1.28 ms
+        64 bytes from 192.168.1.20: icmp_seq=2 ttl=127 time=0.469 ms
+        64 bytes from 192.168.1.20: icmp_seq=3 ttl=127 time=0.591 ms
+        64 bytes from 192.168.1.20: icmp_seq=4 ttl=127 time=0.464 ms
+
+        --- 192.168.1.20 ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss, time 3051ms
+        rtt min/avg/max/mdev = 0.464/0.702/1.284/0.339 ms
+    ```
+
+    </details>
+
 
 - mariadb:
-```bash
-    root@1c9f58c19b4e:/# ping -c4 apache_cont
-    PING apache_cont (172.18.0.3) 56(84) bytes of data.
-    64 bytes from apache_cont.RED_INTERNA (172.18.0.3): icmp_seq=1 ttl=64 time=0.111 ms
-    64 bytes from apache_cont.RED_INTERNA (172.18.0.3): icmp_seq=2 ttl=64 time=0.056 ms
-    64 bytes from apache_cont.RED_INTERNA (172.18.0.3): icmp_seq=3 ttl=64 time=0.052 ms
-    64 bytes from apache_cont.RED_INTERNA (172.18.0.3): icmp_seq=4 ttl=64 time=0.056 ms
+    <details>
 
-    --- apache_cont ping statistics ---
-    4 packets transmitted, 4 received, 0% packet loss, time 3061ms
-    rtt min/avg/max/mdev = 0.052/0.068/0.111/0.024 ms
-    root@1c9f58c19b4e:/# ping -c4 phpmyadmin_cont
-    PING phpmyadmin_cont (172.18.0.4) 56(84) bytes of data.
-    64 bytes from phpmyadmin_cont.RED_INTERNA (172.18.0.4): icmp_seq=1 ttl=64 time=0.057 ms
-    64 bytes from phpmyadmin_cont.RED_INTERNA (172.18.0.4): icmp_seq=2 ttl=64 time=0.057 ms
-    64 bytes from phpmyadmin_cont.RED_INTERNA (172.18.0.4): icmp_seq=3 ttl=64 time=0.057 ms
-    64 bytes from phpmyadmin_cont.RED_INTERNA (172.18.0.4): icmp_seq=4 ttl=64 time=0.056 ms
+    ```bash
+        root@1c9f58c19b4e:/# ping -c4 apache_cont
+        PING apache_cont (172.18.0.3) 56(84) bytes of data.
+        64 bytes from apache_cont.RED_INTERNA (172.18.0.3): icmp_seq=1 ttl=64 time=0.111 ms
+        64 bytes from apache_cont.RED_INTERNA (172.18.0.3): icmp_seq=2 ttl=64 time=0.056 ms
+        64 bytes from apache_cont.RED_INTERNA (172.18.0.3): icmp_seq=3 ttl=64 time=0.052 ms
+        64 bytes from apache_cont.RED_INTERNA (172.18.0.3): icmp_seq=4 ttl=64 time=0.056 ms
 
-    --- phpmyadmin_cont ping statistics ---
-    4 packets transmitted, 4 received, 0% packet loss, time 3042ms
-    rtt min/avg/max/mdev = 0.056/0.056/0.057/0.000 ms
-    root@1c9f58c19b4e:/# ping -c4 192.168.1.109
-    PING 192.168.1.109 (192.168.1.109) 56(84) bytes of data.
-    64 bytes from 192.168.1.109: icmp_seq=1 ttl=64 time=0.395 ms
-    64 bytes from 192.168.1.109: icmp_seq=2 ttl=64 time=0.059 ms
-    64 bytes from 192.168.1.109: icmp_seq=3 ttl=64 time=0.048 ms
-    64 bytes from 192.168.1.109: icmp_seq=4 ttl=64 time=0.067 ms
+        --- apache_cont ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss, time 3061ms
+        rtt min/avg/max/mdev = 0.052/0.068/0.111/0.024 ms
+        root@1c9f58c19b4e:/# ping -c4 phpmyadmin_cont
+        PING phpmyadmin_cont (172.18.0.4) 56(84) bytes of data.
+        64 bytes from phpmyadmin_cont.RED_INTERNA (172.18.0.4): icmp_seq=1 ttl=64 time=0.057 ms
+        64 bytes from phpmyadmin_cont.RED_INTERNA (172.18.0.4): icmp_seq=2 ttl=64 time=0.057 ms
+        64 bytes from phpmyadmin_cont.RED_INTERNA (172.18.0.4): icmp_seq=3 ttl=64 time=0.057 ms
+        64 bytes from phpmyadmin_cont.RED_INTERNA (172.18.0.4): icmp_seq=4 ttl=64 time=0.056 ms
 
-    --- 192.168.1.109 ping statistics ---
-    4 packets transmitted, 4 received, 0% packet loss, time 12973ms
-    rtt min/avg/max/mdev = 0.048/0.142/0.395/0.146 ms
-    root@1c9f58c19b4e:/# ping -c4 192.168.1.20
-    PING 192.168.1.20 (192.168.1.20) 56(84) bytes of data.
-    64 bytes from 192.168.1.20: icmp_seq=1 ttl=127 time=1.11 ms
-    64 bytes from 192.168.1.20: icmp_seq=2 ttl=127 time=0.637 ms
-    64 bytes from 192.168.1.20: icmp_seq=3 ttl=127 time=0.662 ms
-    64 bytes from 192.168.1.20: icmp_seq=4 ttl=127 time=0.695 ms
+        --- phpmyadmin_cont ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss, time 3042ms
+        rtt min/avg/max/mdev = 0.056/0.056/0.057/0.000 ms
+        root@1c9f58c19b4e:/# ping -c4 172.18.0.1
+        PING 172.18.0.1 (172.18.0.1) 56(84) bytes of data.
+        64 bytes from 172.18.0.1: icmp_seq=1 ttl=64 time=0.395 ms
+        64 bytes from 172.18.0.1: icmp_seq=2 ttl=64 time=0.059 ms
+        64 bytes from 172.18.0.1: icmp_seq=3 ttl=64 time=0.048 ms
+        64 bytes from 172.18.0.1: icmp_seq=4 ttl=64 time=0.067 ms
 
-    --- 192.168.1.20 ping statistics ---
-    4 packets transmitted, 4 received, 0% packet loss, time 3008ms
-    rtt min/avg/max/mdev = 0.637/0.776/1.113/0.195 ms
-    root@1c9f58c19b4e:/#
-```
+        --- 172.18.0.1 ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss, time 12973ms
+        rtt min/avg/max/mdev = 0.048/0.142/0.395/0.146 ms
+        root@1c9f58c19b4e:/# ping -c4 192.168.1.20
+        PING 192.168.1.20 (192.168.1.20) 56(84) bytes of data.
+        64 bytes from 192.168.1.20: icmp_seq=1 ttl=127 time=1.11 ms
+        64 bytes from 192.168.1.20: icmp_seq=2 ttl=127 time=0.637 ms
+        64 bytes from 192.168.1.20: icmp_seq=3 ttl=127 time=0.662 ms
+        64 bytes from 192.168.1.20: icmp_seq=4 ttl=127 time=0.695 ms
 
-Una vez comprobado que la red interna funciona perfectamente, sabemos que, si la instalación se hace en una maquina virtual de un vps, los puertos de la ip (dentro del ejercicio son los de Mi ordenador (URL DIAGRAMA)) serán accesibles desde el alojamiento de la máquina del vps.
+        --- 192.168.1.20 ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss, time 3008ms
+        rtt min/avg/max/mdev = 0.637/0.776/1.113/0.195 ms
+        root@1c9f58c19b4e:/#
+    ```
+
+    </details>
+
+Una vez comprobado que la red interna funciona perfectamente, sabemos que, si la instalación se hace en una maquina virtual de un vps, los puertos de la ip (dentro del ejercicio son los de Mi ordenador ([Diagrama](#conclusión))) serán accesibles desde el alojamiento de la máquina del vps.
+
+## Instrucciones Vagrantfile 
+
+[-> Índice](#índice)
+
+Para poder instalar todo lo ejecutado anteriormente, de manera cómoda y desatendida, nos aseguraremos de lo siguiente:
+
+1. Tener en una carpeta dentro de un sistema windows cualquiera lo siguiente:  
+- Una carpeta llamada "vmfiles".  
+- El archivo ["vagrantfile"](#vagrantfile)  
+- El archivo ["provision.sh"](provision.sh)  
+- (Ambos archivos, vagrantfile y provision.sh están en el repositorio donde se encuentra este [README.md](./README.md))  
+2. Ejecutar dentro de la carpeta donde se encuentren estos archivos el comando:
+        ```
+        vagrant up
+        ```
+3. Comprobar que se haya ejecutado correctamente con los siguiente comandos:  
+- Comprobar máquina virtual:
+        ```
+        vagrant global status
+        ```  
+
+- Entonces aparecerá la máquina creada y el hash correspondiente.  
+- Entrar en la máquina usando:
+        ```
+            vagrant ssh (reemplazar por el código/hash).
+        ```
+
+- Una vez dentro, ejecutar el siguiente comando:
+        ```
+            docker stats
+        ```
+
+- Una vez ejecutado te saldrá el estado de los contenedores instalados.
+- Como comprobación final, en la máquina windows donde se aloja todo, ve a un buscador e introduce: http://localhost:8080/info.php y debería aparecer toda la información del contenedor de apache.
