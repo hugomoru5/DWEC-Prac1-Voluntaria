@@ -46,12 +46,12 @@
 
 #### Pasos
 
-- Una vez hecho todo lo anterior, comenzaremos creando una máquina virtual genérica con el sistema debian12 (3/10/2024; v4.3.12 [Vagrant box debian12](https://app.vagrantup.com/generic/boxes/debian12)) basado en la versión de unix VER VERSION DE LINUX
+- Una vez hecho todo lo anterior, comenzaremos creando una máquina virtual genérica con el sistema debian12 (3/10/2024; v4.3.12 [Vagrant box debian12](https://app.vagrantup.com/generic/boxes/debian12)) basado en la versión del núcleo de Linux: 6.1.0-17-amd64
 
     - Para ello abriremos una terminal en powershell y nos situamos en la carpeta que deseemos.
     - Una vez situados, ejecutaremos el siguiente comando:
     ```powershell
-    vagrant init generic/debian12
+        vagrant init generic/debian12
     ```
 
     ##### vagrantfile
@@ -69,6 +69,7 @@
     ```
 
     - Ahora, crearemos el archivo provision.sh e introduciremos el siguiente contenido:
+
     ```bash
     apt-get update && apt-get install -y curl
 

@@ -1,0 +1,32 @@
+name: ut1compose
+services:
+    mariadb:
+        container_name: mariadb_cont
+        networks:
+            - RED_INTERNA
+        environment:
+            - MYSQL_ROOT_PASSWORD=maria_db
+            - MYSQL_USER=pepe
+            - MYSQL_PASSWORD=despliegue
+        image: mariadb:latest
+    php:
+        container_name: apache_cont
+        networks:
+            - RED_INTERNA
+        volumes:
+            - /php-apache:/var/www/html
+        ports:
+            - 80:80
+        image: php:apache
+    phpmyadmin:
+        container_name: phpmyadmin_cont
+        networks:
+            - RED_INTERNA
+        environment:
+            - PMA_HOST=mariadb_cont
+        ports:
+            - 8080:80
+        image: phpmyadmin/phpmyadmin
+networks:
+    RED_INTERNA:
+        name: RED_INTERNA
