@@ -22,9 +22,9 @@ Carpeta - [PRAC0](ut0/)
 ### Práctica 1.1 [Práctica Docker CLI]
 
 Documentación - [README](ut1-Docker/README.md)  
-Carpeta - [PRAC1](ut1-Docker/)
+Carpeta - [PRAC1.1](ut1-Docker/)
 
 ### Práctica 1.2 [Práctica Docker Compose]
 
 Documentación - [README](ut1-Compose/README.md)  
-Carpeta - [PRAC1](ut1-Compose/)
+Carpeta - [PRAC1.2](ut1-Compose/)
