@@ -15,6 +15,7 @@
   - [Instalación y configuración del contenedor de proxy inverso: Caddy](#instalación-y-configuración-del-contenedor-de-proxy-inverso-caddy)
   - [Instalación y configuración del contenedor de Apache: httpd](#instalación-y-configuración-del-contenedor-de-apache-httpd)
   - [Instalación y configuración del contenedor de Monitoración: uptime-kuma](#instalación-y-configuración-del-contenedor-de-monitoración-uptime-kuma)
+  - [EXTRA: Hacerlo todo de golpe:](#extra-hacerlo-todo-de-golpe)
 
 En ésta práctica se solicitan los siguientes requisitos:
 
@@ -492,7 +493,7 @@ docker network create red_interna
 Para empezar crearemos la estructura caddy en el mismo directorio donde se encuentra duckdns.
 Es decir:
 ```bash
-mkdir caddy caddy/bash
+mkdir caddy
 touch ./caddy/docker-compose.yml
 ```
 
@@ -829,3 +830,101 @@ visualizaremos lo siguiente:
 Y si accedemos a la web por la url, veremos lo siguiente:
 
 ![Php Info](./assets/phpInfo.png)
+
+## EXTRA: Hacerlo todo de golpe:
+
+[-> Índice](#índice)
+
+Partiendo de la base de que docker ya está instalado, junto con el modulo de compose
+y que ya tenemos la ip registrada en un subdominio DuckDNS.
+Voy a hacerlo todo sin tener que comprobar y de una tacada, según estos pasos:
+
+1. Crear la estructura
+   - Para ello, crearemos todas las carpetas y archivos.
+    ```bash
+    mkdir duckdns caddy kuma ./apache ./apache/public ./apache/config
+    touch ./apache/config/security.conf | sudo echo "
+    ServerTokens Prod
+    ServerSignature Off
+    TraceEnable Off" >> ./apache/config/security.conf
+
+    touch ./apache/public/index.php | sudo echo "<?php phpInfo(); ?>" >> ./apache/public/index.php
+    ```
+   
+   - Ahora, creamos las dos redes que vamos a usar:
+    ```bash
+    docker network create red_interna
+    docker network create red_monitor
+    ```
+   
+   - Una vez creado, en el mismo sitio, creamos un docker-compose.yml y ponemos el siguiente contenido:
+    ```yml
+    services:
+        duckdns:
+            image: lscr.io/linuxserver/duckdns:latest
+            container_name: duckdns
+            network_mode: host #optional
+            environment:
+                - PUID=1000 #optional
+                - PGID=1000 #optional
+                - TZ=Etc/UTC #optional
+                - SUBDOMAINS=morucastelar
+                - TOKEN=4538f749-28b0-4b4e-8a73-xxxxxxxxxxxx
+                - UPDATE_IP=ipv4 #optional
+                - LOG_FILE=false #optional
+            restart: unless-stopped
+        
+        caddy:
+            image: lucaslorentz/caddy-docker-proxy:ci-alpine
+            container_name: caddy
+            ports:
+                - 80:80
+                - 443:443
+            environment:
+                - CADDY_INGRESS_NETWORKS=red_interna
+            networks:
+                - red_interna
+                - red_monitor
+            volumes:
+                - /var/run/docker.sock:/var/run/docker.sock
+                - caddy_data:/data
+            restart: unless-stopped
+
+        httpd:
+            container_name: apache
+            volumes:
+                - ./apache/public:/var/www/html/
+                - ./apache/config/security.conf:/etc/apache2/conf-available/security.conf
+            image: php:apache
+            networks:
+                - red_interna
+                - red_monitor
+            labels:
+                caddy: "morucastelar.duckdns.org"
+                caddy.reverse_proxy: "{{upstreams 80}}"
+                caddy.tls: "internal"
+
+        uptime-kuma:
+            image: louislam/uptime-kuma:latest
+            container_name: uptime-kuma
+            environment:
+                - DB_SQLITE_FILE=/app/data/kuma.db
+            volumes:
+                - uptime-kuma-data:/app/data
+            ports:
+                - "3001:3001"
+            networks:
+                - red_monitor
+
+    networks:
+        red_interna:
+            external: true
+        red_monitor:
+            external: true
+
+    volumes:
+        caddy_data: {}
+        uptime-kuma-data:
+    ```
+
+**Y listo! Ya está levantado el servidor correctamente y perfectamente configurado!**
