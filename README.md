@@ -32,4 +32,4 @@ Carpeta - [PRAC1.2](ut1-Compose/)
 ### Práctica 2 [Documentación Pre-examen]
 
 Documentación - [README](ut2-SupuestoDeExamen/README.md)  
-Carpeta - [PRAC1.2](ut2-SupuestoDeExamen/)
+Carpeta - [DOCU2](ut2-SupuestoDeExamen/)
