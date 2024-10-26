@@ -28,3 +28,8 @@ Carpeta - [PRAC1.1](ut1-Docker/)
 
 Documentación - [README](ut1-Compose/README.md)  
 Carpeta - [PRAC1.2](ut1-Compose/)
+
+### Práctica 2 [Documentación Pre-examen]
+
+Documentación - [README](ut2-SupuestoDeExamen/README.md)  
+Carpeta - [PRAC1.2](ut2-SupuestoDeExamen/)
