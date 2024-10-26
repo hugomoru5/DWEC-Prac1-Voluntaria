@@ -851,13 +851,13 @@ Voy a hacerlo todo sin tener que comprobar y de una tacada, según estos pasos:
     touch ./apache/public/index.php | sudo echo "<?php phpInfo(); ?>" >> ./apache/public/index.php
     ```
    
-   - Ahora, creamos las dos redes que vamos a usar:
+2. Ahora, creamos las dos redes que vamos a usar:
     ```bash
     docker network create red_interna
     docker network create red_monitor
     ```
    
-   - Una vez creado, en el mismo sitio, creamos un docker-compose.yml y ponemos el siguiente contenido:
+3. Una vez creado, en el mismo sitio, creamos un docker-compose.yml y ponemos el siguiente contenido:
     ```yml
     services:
         duckdns:
